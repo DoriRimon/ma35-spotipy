@@ -7,7 +7,7 @@ class UserType(Enum):
 	ARTIST = "Artist"
 
 
-class Resources(Enum):
+class Resources:
 	# file types
 	json = "json"
 
@@ -30,7 +30,7 @@ class Resources(Enum):
 
 	# paths structure
 	def user_dir_path(self, user_id: str):
-		return self.path_delimiter.join(self.resources_dir, self.users_dir)
+		return self.path_delimiter.join([self.resources_dir, self.users_dir])
 
 	def user_playlist_path(self, user_id: str, playlist_id: str):
 		return self.path_delimiter.join(
