@@ -12,7 +12,7 @@ class Engine:
 
 	def login(self, user_name: str, password: str):
 		users = get_data(Resources.system_users_path)
-		for id, user in users:
+		for id, user in users.items():
 			if user[Resources.user_name] == user_name:
 				if user[Resources.password] == password:
 					self.user_id = id
