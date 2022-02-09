@@ -2,4 +2,5 @@ import json
 from typing import Dict
 
 def get_data(path) -> Dict:
-	return json.load(path)
+	with open(path) as file:
+		return json.load(file)
