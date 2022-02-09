@@ -6,6 +6,7 @@ import os
 from core.models.music import Song, Playlist
 from typing import List, Dict
 
+# TODO - separate duplicate code in parse_songs and parse_user_playlists
 
 def parse_songs() -> List[Song]:
 	songs_dir_path = songs_path
