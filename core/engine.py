@@ -1,5 +1,6 @@
 from core.consts import Resources
 from core.storage import get_data
+from core.storage.parse import Parser
 from core.models.users import User
 from core.errors.users import UserNameDoesntExistException, IncorrectPasswordException
 
@@ -7,6 +8,7 @@ class Engine:
 	def __init__(self):
 		self.user_id: str = None
 		self.user: User = None
+		self.songs = Parser.parse_songs()
 
 	def login(self, user_name: str, password: str):
 		users = get_data(Resources.system_users_path)
