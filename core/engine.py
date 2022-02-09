@@ -1,14 +1,18 @@
 from core.consts import Resources
+from core.models.music import Song
 from core.storage import get_data
-from core.storage.parse import Parser
+from core.storage.parse import parse_songs
 from core.models.users import User
 from core.errors.users import UserNameDoesntExistException, IncorrectPasswordException
+from uuid import uuid4
+from typing import List
+
 
 class Engine:
 	def __init__(self):
 		self.user_id: str = None
 		self.user: User = None
-		self.songs = Parser.parse_songs()
+		self.songs = parse_songs()
 
 	def login(self, user_name: str, password: str):
 		users = get_data(Resources.system_users_path)
