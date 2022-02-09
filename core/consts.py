@@ -45,10 +45,11 @@ def song_path(song_id: str):
 
 
 # json keys
-user_name = "user_name"
-password = "password"
+user_name_key = "user_name"
+password_key = "password"
 id = "id"
 song_name = playlist_name = "name"
 popularity = "popularity"
 playlist_date = "last-changed-date"
 playlist_songs = "songs"
+track = "track"

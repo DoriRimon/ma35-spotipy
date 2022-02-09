@@ -11,4 +11,5 @@ def write_user_playlist(user_id: str, playlist_id: str, playlist_name: str,
 	                 playlist_songs: songs}
 
 	path = user_playlist_path(user_id, playlist_id)
-	json.dump(playlist_dict, path)
+	with open(path, 'w') as file:
+		json.dump(playlist_dict, file)
