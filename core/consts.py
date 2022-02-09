@@ -44,3 +44,6 @@ class Resources:
 	# json keys
 	user_name = "user_name"
 	password = "password"
+	id = "id"
+	song_name = "name"
+	popularity = "popularity"
