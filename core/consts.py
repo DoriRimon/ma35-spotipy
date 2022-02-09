@@ -53,3 +53,7 @@ popularity_key = "popularity"
 playlist_date_key = "last-changed-date"
 playlist_songs_key = "songs"
 track_key = "track"
+
+
+# exceptions messages
+playlist_name_exists_msg = "A playlist with the same name already exists"

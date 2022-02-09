@@ -1,11 +1,11 @@
-from core.consts import system_users_path, user_name_key, password_key
+from core.consts import system_users_path, user_name_key, password_key, playlist_name_exists_msg
 from core.storage import get_data
 from core.storage.parse import parse_songs, parse_user_playlists
 from core.storage.write import write_user_playlist
 from core.models.users import User
 
 from core.errors.users import UserNameDoesntExistException, IncorrectPasswordException
-from core.errors.playlists import PlaylistNotFoundException
+from core.errors.playlists import PlaylistNotFoundException, InvalidPlaylistNameException
 
 from uuid import uuid4
 from typing import List
@@ -39,5 +39,9 @@ class Engine:
 		raise PlaylistNotFoundException
 
 	def create_playlist(self, playlist_name: str, songs: List[str] = None):
-		playlist_id = str(uuid4())
-		write_user_playlist(self.user_id, playlist_id, playlist_name, songs)
+		try:
+			self.get_playlist(playlist_name)
+			raise InvalidPlaylistNameException(playlist_name_exists_msg)
+		except PlaylistNotFoundException as e:
+			playlist_id = str(uuid4())
+			write_user_playlist(self.user_id, playlist_id, playlist_name, songs)
