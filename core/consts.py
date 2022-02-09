@@ -30,7 +30,7 @@ class Resources:
 
 	# paths structure
 	def user_dir_path(self, user_id: str):
-		return self.path_delimiter.join([self.resources_dir, self.users_dir])
+		return self.path_delimiter.join([self.resources_dir, self.users_dir]) + self.path_delimiter + user_id
 
 	def user_playlist_path(self, user_id: str, playlist_id: str):
 		return self.path_delimiter.join(
@@ -47,3 +47,4 @@ class Resources:
 	id = "id"
 	song_name = "name"
 	popularity = "popularity"
+	track = "track"
