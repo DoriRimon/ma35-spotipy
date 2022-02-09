@@ -1,4 +1,4 @@
-from core.consts import system_users_path
+from core.consts import system_users_path, user_name_key, password_key
 from core.storage import get_data
 from core.storage.parse import parse_songs
 from core.storage.write import write_user_playlist
@@ -16,9 +16,9 @@ class Engine:
 
 	def login(self, user_name: str, password: str):
 		users = get_data(system_users_path)
-		for id, user in users:
-			if user[user_name] == user_name:
-				if user[password] == password:
+		for id, user in users.items():
+			if user[user_name_key] == user_name:
+				if user[password_key] == password:
 					self.user_id = id
 					self.user = user
 				else:

@@ -6,6 +6,8 @@ def main():
 
 	engine.login("dori", "Ma!123456")
 
+	engine.create_playlist("top_pop")
+
 
 if __name__ == "__main__":
 	main()
