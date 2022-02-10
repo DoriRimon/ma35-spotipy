@@ -1,5 +1,5 @@
-from core.consts import system_users_path, user_name_key, password_key, playlist_name_exists_msg, \
-	basic_user_limit_amount, UserType
+from core.consts import system_users_path, logs_file_path, user_name_key, password_key, playlist_name_exists_msg, \
+	basic_user_limit_amount, UserType, Logs
 from core.models.music import Album, Song
 from core.storage import get_data
 from core.storage.parse import parse_songs, parse_user_playlists, parse_all_users, parse_user, parse_albums
@@ -12,6 +12,15 @@ from core.errors.music import PlaylistNotFoundException, InvalidPlaylistNameExce
 
 from uuid import uuid4
 from typing import List
+
+import logging
+logging.basicConfig(filename=logs_file_path,
+                    filemode="a",
+                    format="%(asctime)s,%(msecs)d :: %(name)s :: %(levelname)s :: %(message)s",
+                    datefmt="%H:%M:%S",
+                    level=logging.DEBUG)
+
+logger = logging.getLogger(__name__)
 
 
 def _limit_amount(getter_function):
@@ -28,19 +37,21 @@ class Engine:
 	def __init__(self):
 		self.user_id: str = None
 		self.user: BasicUser = None
-		self.songs = parse_songs()
 
 	def login(self, user_name: str, password: str):
 		users = get_data(system_users_path)
 		for id, user in users.items():
 			if user[user_name_key] == user_name:
 				if user[password_key] == password:
+					logger.info(Logs.login_successfully(user_name))
 					self.user_id = id
 					self.user = parse_user(id)
 				else:
+					logger.error(Logs.login_failed(user_name))
 					raise IncorrectPasswordException
 
 		if not self.user:
+			logger.error(Logs.login_failed(user_name))
 			raise UserNameDoesntExistException
 
 	def get_playlist(self, playlist_name: str):
@@ -49,12 +60,15 @@ class Engine:
 			if playlist.name == playlist_name:
 				return playlist
 
+		logger.error(Logs.search_failed("playlist"))
 		raise PlaylistNotFoundException
 
 	# TODO - limit creation by UserType
 	def create_playlist(self, playlist_name: str, songs: List[str] = None):
 		try:
 			self.get_playlist(playlist_name)
+			# TODO - log creation fail
+			logger.error()
 			raise InvalidPlaylistNameException(playlist_name_exists_msg)
 		except PlaylistNotFoundException as e:
 			playlist_id = str(uuid4())
@@ -70,6 +84,7 @@ class Engine:
 		artists = self.get_all_artists()
 		artist = list(filter(lambda a: a.id == artist_id, artists))
 		if not artist:
+			logger.error(Logs.search_failed("artist"))
 			raise ArtistNotFoundException
 		return artist[0].albums
 
@@ -78,6 +93,7 @@ class Engine:
 		all_albums = parse_albums()
 		album = list(filter(lambda a: a.id == album_id, all_albums))
 		if not album:
+			logger.error(Logs.search_failed("album"))
 			raise AlbumNotFoundException
 		return album[0].songs
 
