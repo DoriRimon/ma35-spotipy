@@ -24,6 +24,8 @@ users_dir = "users"
 playlists_dir = "playlists"
 metadata_file = "metadata"
 
+logs_file_path = path_delimiter.join([resources_dir, system_dir, "logs"]) + "." + "log"
+
 songs_path = path_delimiter.join([resources_dir, music_dir, songs_dir])
 albums_path = path_delimiter.join([resources_dir, music_dir, albums_dir])
 system_users_path = path_delimiter.join([resources_dir, system_dir, "users"]) + "." + json_type
@@ -64,6 +66,34 @@ type_key = "type"
 albums_key = "albums"
 songs_key = "songs"
 
-
 # exceptions messages
 playlist_name_exists_msg = "A playlist with the same name already exists"
+
+
+# logs messages
+class Logs:
+	@staticmethod
+	def login_successfully(user_name: str) -> str:
+		return f"{user_name} logged in successfully"
+
+	@staticmethod
+	def login_failed(user_name: str) -> str:
+		return f"login failed for user: {user_name}"
+
+	@staticmethod
+	def search_failed(search_type=None):
+		if search_type:
+			return f"search attempt of type {search_type} failed"
+		return "search attempt failed"
+
+	@staticmethod
+	def write_successfully(write_type=None):
+		if write_type:
+			return f"written system object of type {write_type} successfully to disk"
+		return "written successfully to disk"
+
+	@staticmethod
+	def creation_failed(creation_type=None):
+		if creation_type:
+			return f"creation of system object of type {creation_type} failed"
+		return "creation of system object"
