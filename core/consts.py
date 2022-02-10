@@ -8,7 +8,9 @@ class UserType(Enum):
 
 
 # limits
-basic_user_limit_amount = 5
+basic_user_returned_results_limit = 5
+basic_user_playlist_creation_limit = 5
+basic_user_playlist_songs_limit = 20
 
 # file types
 json_type = "json"
