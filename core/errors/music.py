@@ -5,3 +5,7 @@ class InvalidPlaylistNameException(Exception):
 
 class PlaylistNotFoundException(Exception):
 	pass
+
+
+class AlbumNotFoundException(Exception):
+	pass
