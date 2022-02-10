@@ -99,3 +99,29 @@ class Logs:
 		if creation_type:
 			return f"creation of system object of type {creation_type} failed"
 		return "creation of system object"
+
+
+class Console:
+	# titles
+	main_title = "Spotipy Console"
+
+	# options names
+	exit = "Exit"
+	login = "Login"
+	create_playlist = "Create a new playlist"
+	get_artists = "Show all artists"
+	get_artist_albums = "Show artist's albums"
+	get_artist_top_songs = "Show top 10 songs by artist"
+	get_album_songs = "Show album's songs"
+
+	# messages
+	enter_user_name = "Please enter your user name"
+	enter_password = "Please enter your password"
+
+	enter_playlist_name = "Please enter playlist's name"
+
+	# errors
+	incorrect_password = "Incorrect password"
+	incorrect_username = "Username doesn't exist"
+
+	invalid_playlist_name = "Invalid playlist name"
