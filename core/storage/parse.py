@@ -1,16 +1,16 @@
 from core.consts import UserType, id_key, name_key, popularity_key, songs_path, \
 	user_dir_path, playlists_dir, path_delimiter, track_key, \
-	name_key, playlist_songs_key, resources_dir, users_dir, metadata_file, json_type, type_key, albums_key
+	name_key, playlist_songs_key, resources_dir, users_dir, metadata_file, json_type, type_key, albums_key, albums_path, \
+	songs_key
 
 import json
 import os
 
-from core.models.music import Song, Playlist
+from core.models.music import Song, Playlist, Album
 from core.models.users import BasicUser, Artist
 
 from typing import List
 
-# TODO - separate duplicate code in parse_songs and parse_user_playlists
 
 def dir_paths(dir_path) -> List[str]:
 	inner_paths = os.listdir(dir_path)
@@ -75,3 +75,17 @@ def parse_user(user_id: str):
 	if not user:
 		return None
 	return user[0]
+
+def parse_albums():
+	albums_paths = dir_paths(albums_path)
+	albums = []
+	for file_path in albums_paths:
+		with open(file_path) as file:
+			album_json = json.load(file)
+			albums.append(Album(
+				album_json[id_key],
+				album_json[name_key],
+				album_json[songs_key]
+			))
+
+	return albums

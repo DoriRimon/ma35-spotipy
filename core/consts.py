@@ -18,12 +18,14 @@ path_delimiter = "/"
 resources_dir = "resources"
 music_dir = "music"
 songs_dir = "songs"
+albums_dir = "albums"
 system_dir = "system"
 users_dir = "users"
 playlists_dir = "playlists"
 metadata_file = "metadata"
 
 songs_path = path_delimiter.join([resources_dir, music_dir, songs_dir])
+albums_path = path_delimiter.join([resources_dir, music_dir, albums_dir])
 system_users_path = path_delimiter.join([resources_dir, system_dir, "users"]) + "." + json_type
 
 # base tokens
@@ -60,6 +62,7 @@ playlist_songs_key = "songs"
 track_key = "track"
 type_key = "type"
 albums_key = "albums"
+songs_key = "songs"
 
 
 # exceptions messages
