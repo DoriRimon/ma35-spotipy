@@ -30,11 +30,12 @@ system_users_path = path_delimiter.join([resources_dir, system_dir, "users"]) + 
 name_delimiter = "_"
 song_base = "song"
 playlist_base = "playlist"
+user_base = "user"
 
 
 # paths structure
 def user_dir_path(user_id: str):
-	return path_delimiter.join([resources_dir, users_dir, user_id])
+	return path_delimiter.join([resources_dir, users_dir, user_base]) + name_delimiter + user_id
 
 
 def user_playlist_path(user_id: str, playlist_id: str):
