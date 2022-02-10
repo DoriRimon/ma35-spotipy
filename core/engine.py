@@ -1,11 +1,12 @@
 from core.consts import system_users_path, user_name_key, password_key, playlist_name_exists_msg
+from core.models.music import Album
 from core.storage import get_data
 from core.storage.parse import parse_songs, parse_user_playlists, parse_all_users
 from core.storage.write import write_user_playlist
 
 from core.models.users import BasicUser, Artist
 
-from core.errors.users import UserNameDoesntExistException, IncorrectPasswordException
+from core.errors.users import UserNameDoesntExistException, IncorrectPasswordException, ArtistNotFoundException
 from core.errors.playlists import PlaylistNotFoundException, InvalidPlaylistNameException
 
 from uuid import uuid4
@@ -48,6 +49,14 @@ class Engine:
 			write_user_playlist(self.user_id, playlist_id, playlist_name, songs)
 
 	@staticmethod
-	def get_all_artists():
+	def get_all_artists() -> List[Artist]:
 		all_users = parse_all_users()
 		return list(filter(lambda user: isinstance(user, Artist), all_users))
+
+	@staticmethod
+	def get_artist_albums(artist_id) -> List[Album]:
+		artists = Engine.get_all_artists()
+		artist = list(filter(lambda a: a.id == artist_id, artists))
+		if not artist:
+			raise ArtistNotFoundException
+		return artist[0].albums
