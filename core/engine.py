@@ -2,7 +2,7 @@ from core.consts import system_users_path, user_name_key, password_key, playlist
 	basic_user_limit_amount, UserType
 from core.models.music import Album
 from core.storage import get_data
-from core.storage.parse import parse_songs, parse_user_playlists, parse_all_users
+from core.storage.parse import parse_songs, parse_user_playlists, parse_all_users, parse_user
 from core.storage.write import write_user_playlist
 
 from core.models.users import BasicUser, Artist
@@ -13,6 +13,16 @@ from core.errors.playlists import PlaylistNotFoundException, InvalidPlaylistName
 from uuid import uuid4
 from typing import List
 
+
+def _limit_amount(getter_function):
+	def limited_getter(self, *args):
+		result = getter_function(self, *args)
+
+		if self.user.user_type != UserType.BASIC.value:
+			return result
+		return result[:min(basic_user_limit_amount, len(result))]
+
+	return limited_getter
 
 class Engine:
 	def __init__(self):
@@ -26,22 +36,12 @@ class Engine:
 			if user[user_name_key] == user_name:
 				if user[password_key] == password:
 					self.user_id = id
-					self.user = user
+					self.user = parse_user(id)
 				else:
 					raise IncorrectPasswordException
 
 		if not self.user:
 			raise UserNameDoesntExistException
-
-	def _limit_amount(self, getter_function):
-		if self.user.user_type != UserType.BASIC.value:
-			return getter_function
-
-		def limited_getter(*args):
-			result = getter_function(*args)
-			return result[:min(basic_user_limit_amount, len(result))]
-
-		return limited_getter
 
 	def get_playlist(self, playlist_name: str):
 		playlists = parse_user_playlists(self.user_id)
@@ -72,3 +72,5 @@ class Engine:
 		if not artist:
 			raise ArtistNotFoundException
 		return artist[0].albums
+
+

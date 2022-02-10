@@ -7,7 +7,7 @@ def main():
 	engine.login("dori", "Ma!123456")
 	# engine.create_playlist("top_pop")
 	print(list(map(lambda artist: artist.name, engine.get_all_artists())))
-	print(engine.get_artist_albums("user_2wp6i8BxLF3UrF1J3LY4WC"))
+	print(engine.get_artist_albums("2wp6i8BxLF3UrF1J3LY4WC"))
 
 
 if __name__ == "__main__":

@@ -69,3 +69,10 @@ def parse_all_users():
 				))
 
 	return users
+
+def parse_user(user_id: str):
+	all_users = parse_all_users()
+	user = list(filter(lambda u: u.id == user_id, all_users))
+	if not user:
+		return None
+	return user[0]
