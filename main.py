@@ -8,6 +8,8 @@ def main():
 	# engine.create_playlist("top_pop")
 	print(list(map(lambda artist: artist.name, engine.get_all_artists())))
 	print(engine.get_artist_albums("2wp6i8BxLF3UrF1J3LY4WC"))
+	print(engine.get_album_songs("a78c"))
+	print(engine.get_artist_top_songs("2wp6i8BxLF3UrF1J3LY4WC"))
 
 
 if __name__ == "__main__":
