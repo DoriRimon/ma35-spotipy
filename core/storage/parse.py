@@ -61,10 +61,15 @@ def parse_all_users():
 					user_type
 				))
 			else:
+				album_ids = user_json[albums_key]
+				if album_ids:
+					albums = list(filter(lambda a: a.id in album_ids, parse_albums()))
+				else:
+					albums = []
 				users.append(Artist(
 					user_json[id_key],
 					user_json[name_key],
-					user_json[albums_key]
+					albums
 				))
 
 	return users
@@ -82,10 +87,15 @@ def parse_albums():
 	for file_path in albums_paths:
 		with open(file_path) as file:
 			album_json = json.load(file)
+			songs_ids = album_json[songs_key]
+			if songs_ids:
+				songs = list(filter(lambda s: s.id in songs_ids, parse_songs()))
+			else:
+				songs = []
 			albums.append(Album(
 				album_json[id_key],
 				album_json[name_key],
-				album_json[songs_key]
+				songs
 			))
 
 	return albums
