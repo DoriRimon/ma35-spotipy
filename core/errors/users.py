@@ -6,3 +6,6 @@ class IncorrectPasswordException(Exception):
 
 class ArtistNotFoundException(Exception):
 	pass
+
+class BasicUserInvalidCreationException(Exception):
+	pass
