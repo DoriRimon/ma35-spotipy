@@ -7,6 +7,9 @@ class UserType(Enum):
 	ARTIST = "Artist"
 
 
+# limits
+basic_user_limit_amount = 5
+
 # file types
 json_type = "json"
 
