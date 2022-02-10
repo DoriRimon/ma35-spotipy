@@ -1,14 +1,14 @@
 from core.consts import system_users_path, user_name_key, password_key, playlist_name_exists_msg, \
 	basic_user_limit_amount, UserType
-from core.models.music import Album
+from core.models.music import Album, Song
 from core.storage import get_data
-from core.storage.parse import parse_songs, parse_user_playlists, parse_all_users, parse_user
+from core.storage.parse import parse_songs, parse_user_playlists, parse_all_users, parse_user, parse_albums
 from core.storage.write import write_user_playlist
 
 from core.models.users import BasicUser, Artist
 
 from core.errors.users import UserNameDoesntExistException, IncorrectPasswordException, ArtistNotFoundException
-from core.errors.playlists import PlaylistNotFoundException, InvalidPlaylistNameException
+from core.errors.music import PlaylistNotFoundException, InvalidPlaylistNameException, AlbumNotFoundException
 
 from uuid import uuid4
 from typing import List
@@ -73,4 +73,10 @@ class Engine:
 			raise ArtistNotFoundException
 		return artist[0].albums
 
-
+	@_limit_amount
+	def get_album_songs(self, album_id: str) -> List[Song]:
+		all_albums = parse_albums()
+		album = list(filter(lambda a: a.id == album_id, all_albums))
+		if not album:
+			raise AlbumNotFoundException
+		return album[0].songs
