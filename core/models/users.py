@@ -4,20 +4,14 @@ from core.consts import UserType
 from core.models.music import Album
 
 
-class User:
-	def __init__(self, id: str, name: str):
+class BasicUser:
+	def __init__(self, id: str, name: str, user_type: UserType):
 		self.id = id
 		self.name = name
+		self.user_type = user_type
 
 
-class BasicUser(User):
-	def __int__(self, id: str, name: str, type: UserType):
-		super().__init__(id, name)
-		self.type = type
-
-
-class Artist(User):
+class Artist(BasicUser):
 	def __init__(self, id: str, name: str, albums: List[Album]):
-		super().__init__(id, name)
-		self.type = UserType.ARTIST
+		super().__init__(id, name, UserType.ARTIST)
 		self.albums = albums
