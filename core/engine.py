@@ -1,4 +1,5 @@
-from core.consts import system_users_path, user_name_key, password_key, playlist_name_exists_msg
+from core.consts import system_users_path, user_name_key, password_key, playlist_name_exists_msg, \
+	basic_user_limit_amount, UserType
 from core.models.music import Album
 from core.storage import get_data
 from core.storage.parse import parse_songs, parse_user_playlists, parse_all_users
@@ -32,6 +33,16 @@ class Engine:
 		if not self.user:
 			raise UserNameDoesntExistException
 
+	def _limit_amount(self, getter_function):
+		if self.user.user_type != UserType.BASIC.value:
+			return getter_function
+
+		def limited_getter(*args):
+			result = getter_function(*args)
+			return result[:min(basic_user_limit_amount, len(result))]
+
+		return limited_getter
+
 	def get_playlist(self, playlist_name: str):
 		playlists = parse_user_playlists(self.user_id)
 		for playlist in playlists:
@@ -40,6 +51,7 @@ class Engine:
 
 		raise PlaylistNotFoundException
 
+	# TODO - limit creation by UserType
 	def create_playlist(self, playlist_name: str, songs: List[str] = None):
 		try:
 			self.get_playlist(playlist_name)
@@ -48,14 +60,14 @@ class Engine:
 			playlist_id = str(uuid4())
 			write_user_playlist(self.user_id, playlist_id, playlist_name, songs)
 
-	@staticmethod
-	def get_all_artists() -> List[Artist]:
+	@_limit_amount
+	def get_all_artists(self) -> List[Artist]:
 		all_users = parse_all_users()
 		return list(filter(lambda user: isinstance(user, Artist), all_users))
 
-	@staticmethod
-	def get_artist_albums(artist_id) -> List[Album]:
-		artists = Engine.get_all_artists()
+	@_limit_amount
+	def get_artist_albums(self, artist_id) -> List[Album]:
+		artists = self.get_all_artists()
 		artist = list(filter(lambda a: a.id == artist_id, artists))
 		if not artist:
 			raise ArtistNotFoundException
