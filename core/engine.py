@@ -80,3 +80,12 @@ class Engine:
 		if not album:
 			raise AlbumNotFoundException
 		return album[0].songs
+
+	@_limit_amount
+	def get_artist_top_songs(self, artist_id: str, limit=10):
+		albums = self.get_artist_albums(artist_id)  # returns albums limited by UserType
+		songs = []
+		for album in albums:
+			songs += album.songs
+		songs.sort(key=lambda song: song.popularity, reverse=True)
+		return songs[:min(limit, len(songs))]
