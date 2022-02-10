@@ -123,3 +123,20 @@ class Engine:
 			songs += album.songs
 		songs.sort(key=lambda song: song.popularity, reverse=True)
 		return songs[:min(limit, len(songs))]
+
+	def get_artist_id(self, artist_name: str) -> str:
+		artists = self.get_all_artists()
+		for artist in artists:
+			if artist.name == artist_name:  # for now returns first artist found
+				return artist.id
+
+		raise ArtistNotFoundException
+
+	@staticmethod
+	def get_album_id(album_name: str) -> str:
+		all_albums = parse_albums()
+		for album in all_albums:
+			if album.name == album_name:  # for now returns first album found
+				return album.id
+
+		raise AlbumNotFoundException
