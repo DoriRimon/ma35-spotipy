@@ -12,11 +12,12 @@ from typing import List
 
 # TODO - separate duplicate code in parse_songs and parse_user_playlists
 
-def parse_songs() -> List[Song]:
-	songs_dir_path = songs_path
-	songs_paths = os.listdir(songs_dir_path)
+def dir_paths(dir_path) -> List[str]:
+	inner_paths = os.listdir(dir_path)
+	return list(map(lambda path: dir_path + path_delimiter + path, inner_paths))
 
-	songs_paths = list(map(lambda song_path: songs_dir_path + path_delimiter + song_path, songs_paths))
+def parse_songs() -> List[Song]:
+	songs_paths = dir_paths(songs_path)
 	songs = []
 	for file_path in songs_paths:
 		with open(file_path) as file:
@@ -30,9 +31,7 @@ def parse_songs() -> List[Song]:
 
 def parse_user_playlists(user_id: str) -> List[Playlist]:
 	playlists_dir_path = user_dir_path(user_id) + path_delimiter + playlists_dir
-	playlists_paths = os.listdir(playlists_dir_path)
-
-	playlists_paths = (list(map(lambda playlist_path: playlists_dir_path + path_delimiter + playlist_path, playlists_paths)))
+	playlists_paths = dir_paths(playlists_dir_path)
 	playlists = []
 	for file_path in playlists_paths:
 		with open(file_path) as file:
