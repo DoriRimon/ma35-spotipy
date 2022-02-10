@@ -1,8 +1,9 @@
 from core.consts import system_users_path, user_name_key, password_key, playlist_name_exists_msg
 from core.storage import get_data
-from core.storage.parse import parse_songs, parse_user_playlists
+from core.storage.parse import parse_songs, parse_user_playlists, parse_all_users
 from core.storage.write import write_user_playlist
-from core.models.users import User
+
+from core.models.users import BasicUser, Artist
 
 from core.errors.users import UserNameDoesntExistException, IncorrectPasswordException
 from core.errors.playlists import PlaylistNotFoundException, InvalidPlaylistNameException
@@ -14,7 +15,7 @@ from typing import List
 class Engine:
 	def __init__(self):
 		self.user_id: str = None
-		self.user: User = None
+		self.user: BasicUser = None
 		self.songs = parse_songs()
 
 	def login(self, user_name: str, password: str):
@@ -45,3 +46,8 @@ class Engine:
 		except PlaylistNotFoundException as e:
 			playlist_id = str(uuid4())
 			write_user_playlist(self.user_id, playlist_id, playlist_name, songs)
+
+	@staticmethod
+	def get_all_artists():
+		all_users = parse_all_users()
+		return list(filter(lambda user: isinstance(user, Artist), all_users))
