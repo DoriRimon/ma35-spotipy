@@ -3,3 +3,6 @@ class UserNameDoesntExistException(Exception):
 
 class IncorrectPasswordException(Exception):
 	pass
+
+class ArtistNotFoundException(Exception):
+	pass
