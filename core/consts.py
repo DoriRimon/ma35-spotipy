@@ -108,6 +108,7 @@ class Console:
 	# options names
 	exit = "Exit"
 	login = "Login"
+
 	create_playlist = "Create a new playlist"
 	get_artists = "Show all artists"
 	get_artist_albums = "Show artist's albums"
@@ -119,9 +120,18 @@ class Console:
 	enter_password = "Please enter your password"
 
 	enter_playlist_name = "Please enter playlist's name"
+	enter_artist_name = "Enter artist name"
+	enter_album_name = "Enter album name"
 
 	# errors
 	incorrect_password = "Incorrect password"
 	incorrect_username = "Username doesn't exist"
 
 	invalid_playlist_name = "Invalid playlist name"
+
+	artist_not_found = "No such artist exists"
+	album_not_found = "No such album"
+
+	@staticmethod
+	def build_input_message(message):
+		return f"{message}: "
